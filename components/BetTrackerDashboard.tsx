@@ -82,20 +82,39 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
       setLoading(true);
       setError(null);
 
+      // For development, we'll use a simple token
+      // In production, this would come from Whop authentication
+      const authToken = "dev-token-123";
+
       // Fetch bets
-      const betsResponse = await fetch(`/api/bets?experience_id=${experienceId}`);
+      const betsResponse = await fetch(`/api/bets?experience_id=${experienceId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
       if (!betsResponse.ok) throw new Error("Failed to fetch bets");
       const betsData = await betsResponse.json();
       setBets(betsData.bets || []);
 
       // Fetch user stats
-      const statsResponse = await fetch(`/api/user-stats?experience_id=${experienceId}`);
+      const statsResponse = await fetch(`/api/user-stats?experience_id=${experienceId}`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
       if (!statsResponse.ok) throw new Error("Failed to fetch stats");
       const statsData = await statsResponse.json();
       setStats(statsData.stats);
 
       // Fetch leaderboard
-      const leaderboardResponse = await fetch(`/api/leaderboard?experience_id=${experienceId}&limit=20`);
+      const leaderboardResponse = await fetch(`/api/leaderboard?experience_id=${experienceId}&limit=20`, {
+        headers: {
+          'Authorization': `Bearer ${authToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
       if (!leaderboardResponse.ok) throw new Error("Failed to fetch leaderboard");
       const leaderboardData = await leaderboardResponse.json();
       setLeaderboard(leaderboardData.leaderboard || []);
