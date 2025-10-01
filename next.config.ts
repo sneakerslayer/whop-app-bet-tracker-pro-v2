@@ -17,7 +17,11 @@ const nextConfig: NextConfig = {
 					},
 					{
 						key: "Content-Security-Policy",
-						value: "frame-ancestors 'self' https://*.whop.com https://whop.com https://dash.whop.com https://app.whop.com",
+						value: "frame-ancestors 'self' https://*.whop.com https://whop.com https://dash.whop.com https://app.whop.com https://*.whop.io https://whop.io",
+					},
+					{
+						key: "Referrer-Policy",
+						value: "strict-origin-when-cross-origin",
 					},
 				],
 			},
