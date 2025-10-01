@@ -1,6 +1,6 @@
 "use client";
 
-import { useWhopApp } from "@whop/react/hooks";
+import { useWhopApp } from "@whop/react";
 import BetTrackerDashboard from "@/components/BetTrackerDashboard";
 
 export default function Page() {
