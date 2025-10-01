@@ -138,7 +138,7 @@ export default function LeaderboardTable({ leaderboard, experienceId }: Leaderbo
                           {user.users.display_name || user.users.username}
                         </span>
                         {user.users.is_verified && (
-                          <Shield className="w-4 h-4 text-blue-400" title="Verified" />
+                          <Shield className="w-4 h-4 text-blue-400" />
                         )}
                       </div>
                     </div>

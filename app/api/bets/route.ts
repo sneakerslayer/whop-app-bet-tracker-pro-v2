@@ -1,13 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateToken } from "@whop/next";
+import { whopSdk } from "@/lib/whop-sdk";
 import { supabase } from "@/lib/supabase";
 import { getOrCreateUser } from "@/lib/auth";
 import { calculatePotentialReturn, convertAmericanToDecimal } from "@/lib/calculations";
 import { updateUserStats } from "@/lib/stats";
+import { validateWhopToken } from "@/lib/auth-helpers";
 
 export async function GET(request: NextRequest) {
   try {
-    const { userId } = await validateToken({ headers: request.headers });
+    const userId = await validateWhopToken(request);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
@@ -41,7 +42,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await validateToken({ headers: request.headers });
+    const userId = await validateWhopToken(request);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

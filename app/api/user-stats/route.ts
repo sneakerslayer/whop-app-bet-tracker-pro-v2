@@ -1,11 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateToken } from "@whop/next";
 import { getUserStats } from "@/lib/stats";
 import { getOrCreateUser } from "@/lib/auth";
+import { validateWhopToken } from "@/lib/auth-helpers";
 
 export async function GET(request: NextRequest) {
   try {
-    const { userId } = await validateToken({ headers: request.headers });
+    const userId = await validateWhopToken(request);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }

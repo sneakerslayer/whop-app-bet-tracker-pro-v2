@@ -1,12 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
-import { validateToken } from "@whop/next";
 import { supabase } from "@/lib/supabase";
 import { updateUserStats } from "@/lib/stats";
 import { calculateActualReturn } from "@/lib/calculations";
+import { validateWhopToken } from "@/lib/auth-helpers";
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await validateToken({ headers: request.headers });
+    const userId = await validateWhopToken(request);
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
