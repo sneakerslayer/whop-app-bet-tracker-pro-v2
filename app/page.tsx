@@ -8,16 +8,32 @@ export default function Page() {
 	const sdk = useIframeSdk();
 	const [experienceId, setExperienceId] = useState<string>("dev-experience-123");
 	const [hasAccess, setHasAccess] = useState(true);
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (sdk) {
 			sdk.getTopLevelUrlData({}).then((data) => {
 				setExperienceId(data.experienceId);
-			}).catch(() => {
-				// Keep default value
+				setLoading(false);
+			}).catch((error) => {
+				console.error("SDK error:", error);
+				setLoading(false);
 			});
+		} else {
+			setLoading(false);
 		}
 	}, [sdk]);
+
+	if (loading) {
+	return (
+			<div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+				<div className="text-center">
+					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+					<p className="text-white/70">Loading BetTracker Pro...</p>
+				</div>
+					</div>
+		);
+	}
 
 	if (!hasAccess) {
 		return (
@@ -33,20 +49,9 @@ export default function Page() {
 					>
 						Get Access
 					</button>
-				</div>
 			</div>
-		);
-	}
-
-	if (!experienceId) {
-		return (
-			<div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-				<div className="text-center">
-					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-					<p className="text-white/70">Loading BetTracker Pro...</p>
-				</div>
-			</div>
-		);
+		</div>
+	);
 	}
 
 	return <BetTrackerDashboard experienceId={experienceId} />;
