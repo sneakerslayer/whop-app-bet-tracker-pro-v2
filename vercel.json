@@ -5,7 +5,11 @@
       "headers": [
         {
           "key": "Content-Security-Policy",
-          "value": "frame-ancestors 'self' https://*.whop.com https://whop.com https://dash.whop.com"
+          "value": "frame-ancestors 'self' https://*.whop.com https://whop.com https://dash.whop.com https://app.whop.com"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "ALLOWALL"
         }
       ]
     }
