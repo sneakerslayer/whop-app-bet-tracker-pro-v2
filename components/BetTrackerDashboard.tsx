@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useWhopApp } from "@whop/react/hooks";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, AreaChart, Area } from "recharts";
 import BetForm from "./BetForm";
 import BetCard from "./BetCard";
@@ -71,6 +72,7 @@ interface BetTrackerDashboardProps {
 }
 
 export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboardProps) {
+  const { user } = useWhopApp();
   const [bets, setBets] = useState<Bet[]>([]);
   const [stats, setStats] = useState<UserStats | null>(null);
   const [leaderboard, setLeaderboard] = useState<LeaderboardUser[]>([]);
@@ -82,9 +84,8 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
       setLoading(true);
       setError(null);
 
-      // For development, we'll use a simple token
-      // In production, this would come from Whop authentication
-      const authToken = "dev-token-123";
+      // Get the user's token from Whop SDK
+      const authToken = user?.token || "dev-token-123";
 
       // Fetch bets
       const betsResponse = await fetch(`/api/bets?experience_id=${experienceId}`, {

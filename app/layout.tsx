@@ -1,4 +1,5 @@
 import { WhopApp } from "@whop/react/components";
+import { WhopIframeSdkProvider } from "@whop/react";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
@@ -14,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-	title: "Whop App",
-	description: "My Whop App",
+	title: "BetTracker Pro",
+	description: "Professional sports betting portfolio management for Whop communities",
 };
 
 export default function RootLayout({
@@ -28,7 +29,9 @@ export default function RootLayout({
 			<body
 				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
 			>
-				<WhopApp>{children}</WhopApp>
+				<WhopIframeSdkProvider>
+					<WhopApp>{children}</WhopApp>
+				</WhopIframeSdkProvider>
 			</body>
 		</html>
 	);
