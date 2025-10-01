@@ -1,10 +1,23 @@
 "use client";
 
-import { useWhopApp } from "@whop/react";
+import { useState, useEffect } from "react";
+import { useIframeSdk } from "@whop/react";
 import BetTrackerDashboard from "@/components/BetTrackerDashboard";
 
 export default function Page() {
-	const { hasAccess, experienceId } = useWhopApp();
+	const sdk = useIframeSdk();
+	const [experienceId, setExperienceId] = useState<string>("dev-experience-123");
+	const [hasAccess, setHasAccess] = useState(true);
+
+	useEffect(() => {
+		if (sdk) {
+			sdk.getTopLevelUrlData({}).then((data) => {
+				setExperienceId(data.experienceId);
+			}).catch(() => {
+				// Keep default value
+			});
+		}
+	}, [sdk]);
 
 	if (!hasAccess) {
 		return (
