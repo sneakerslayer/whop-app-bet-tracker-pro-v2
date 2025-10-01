@@ -218,10 +218,16 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ 
+          background: 'linear-gradient(to bottom right, #0f172a, #581c87, #0f172a)',
+          color: '#ffffff'
+        }}
+      >
         <div className="text-center">
           <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-          <p className="text-white/70">Loading your betting dashboard...</p>
+          <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Loading your betting dashboard...</p>
         </div>
       </div>
     );
@@ -229,14 +235,33 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
 
   if (error) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-8 text-center max-w-md">
-          <h2 className="text-xl font-semibold text-white mb-4">Error Loading Dashboard</h2>
-          <p className="text-white/70 mb-4">{error}</p>
+      <div 
+        className="min-h-screen flex items-center justify-center"
+        style={{ 
+          background: 'linear-gradient(to bottom right, #0f172a, #581c87, #0f172a)',
+          color: '#ffffff'
+        }}
+      >
+        <div 
+          className="rounded-xl p-8 text-center max-w-md"
+          style={{
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            backdropFilter: 'blur(12px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }}
+        >
+          <h2 className="text-xl font-semibold mb-4" style={{ color: '#ffffff' }}>Error Loading Dashboard</h2>
+          <p className="mb-4" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>{error}</p>
           <div className="space-y-2">
             <button
               onClick={fetchData}
-              className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+              className="w-full px-4 py-2 rounded-lg transition-colors"
+              style={{ 
+                backgroundColor: '#2563eb',
+                color: '#ffffff'
+              }}
+              onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#1d4ed8'}
+              onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#2563eb'}
             >
               Try Again
             </button>
@@ -248,7 +273,13 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
                 setLeaderboard([]);
                 setLoading(false);
               }}
-              className="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+              className="w-full px-4 py-2 rounded-lg transition-colors"
+              style={{ 
+                backgroundColor: '#4b5563',
+                color: '#ffffff'
+              }}
+              onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#374151'}
+              onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#4b5563'}
             >
               Continue Anyway
             </button>
@@ -259,13 +290,19 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900">
+    <div 
+      className="min-h-screen"
+      style={{ 
+        background: 'linear-gradient(to bottom right, #0f172a, #581c87, #0f172a)',
+        color: '#ffffff'
+      }}
+    >
       <div className="container mx-auto px-4 py-8">
         {/* Header */}
         <div className="flex justify-between items-center mb-8">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-2">BetTracker Pro</h1>
-            <p className="text-white/70">Professional sports betting portfolio management</p>
+            <h1 className="text-3xl font-bold mb-2" style={{ color: '#ffffff' }}>BetTracker Pro</h1>
+            <p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Professional sports betting portfolio management</p>
           </div>
           <BetForm experienceId={experienceId} onBetCreated={handleBetCreated} />
         </div>
@@ -281,8 +318,15 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
         {chartData.length > 0 && (
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
             {/* Profit Chart */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">Cumulative Profit</h3>
+            <div 
+              className="rounded-xl p-6"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
+              }}
+            >
+              <h3 className="text-xl font-semibold mb-4" style={{ color: '#ffffff' }}>Cumulative Profit</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <AreaChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
@@ -317,8 +361,15 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
             </div>
 
             {/* ROI Chart */}
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">ROI Progression</h3>
+            <div 
+              className="rounded-xl p-6"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
+              }}
+            >
+              <h3 className="text-xl font-semibold mb-4" style={{ color: '#ffffff' }}>ROI Progression</h3>
               <ResponsiveContainer width="100%" height={300}>
                 <LineChart data={chartData}>
                   <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
@@ -358,12 +409,19 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Recent Bets */}
           <div className="lg:col-span-2">
-            <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-6">
-              <h3 className="text-xl font-semibold text-white mb-4">Recent Bets</h3>
+            <div 
+              className="rounded-xl p-6"
+              style={{
+                backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(12px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)'
+              }}
+            >
+              <h3 className="text-xl font-semibold mb-4" style={{ color: '#ffffff' }}>Recent Bets</h3>
               {bets.length === 0 ? (
                 <div className="text-center py-8">
-                  <p className="text-white/70 mb-4">No bets yet</p>
-                  <p className="text-white/50 text-sm">Create your first bet to start tracking your performance!</p>
+                  <p className="mb-4" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>No bets yet</p>
+                  <p className="text-sm" style={{ color: 'rgba(255, 255, 255, 0.5)' }}>Create your first bet to start tracking your performance!</p>
                 </div>
               ) : (
                 <div className="space-y-4">

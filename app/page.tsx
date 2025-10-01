@@ -49,10 +49,16 @@ export default function Page() {
 	// Show loading only briefly
 	if (loading) {
 		return (
-			<div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
+			<div 
+				className="min-h-screen flex items-center justify-center"
+				style={{ 
+					background: 'linear-gradient(to bottom right, #0f172a, #581c87, #0f172a)',
+					color: '#ffffff'
+				}}
+			>
 				<div className="text-center">
 					<div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
-					<p className="text-white/70">Loading BetTracker Pro...</p>
+					<p style={{ color: 'rgba(255, 255, 255, 0.7)' }}>Loading BetTracker Pro...</p>
 					{sdkError && (
 						<p className="text-yellow-400 text-sm mt-2">SDK Error: {sdkError}</p>
 					)}
@@ -64,15 +70,34 @@ export default function Page() {
 	// Show access required message only if explicitly denied
 	if (!hasAccess) {
 		return (
-			<div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center">
-				<div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-8 text-center max-w-md">
-					<h2 className="text-2xl font-bold text-white mb-4">Access Required</h2>
-					<p className="text-white/70 mb-6">
+			<div 
+				className="min-h-screen flex items-center justify-center"
+				style={{ 
+					background: 'linear-gradient(to bottom right, #0f172a, #581c87, #0f172a)',
+					color: '#ffffff'
+				}}
+			>
+				<div 
+					className="rounded-xl p-8 text-center max-w-md"
+					style={{
+						backgroundColor: 'rgba(255, 255, 255, 0.1)',
+						backdropFilter: 'blur(12px)',
+						border: '1px solid rgba(255, 255, 255, 0.2)'
+					}}
+				>
+					<h2 className="text-2xl font-bold mb-4" style={{ color: '#ffffff' }}>Access Required</h2>
+					<p className="mb-6" style={{ color: 'rgba(255, 255, 255, 0.7)' }}>
 						You need to purchase access to this betting community to use BetTracker Pro.
 					</p>
 					<button
 						onClick={() => window.location.href = "https://whop.com"}
-						className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+						className="px-6 py-3 rounded-lg transition-colors"
+						style={{ 
+							backgroundColor: '#2563eb',
+							color: '#ffffff'
+						}}
+						onMouseEnter={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#1d4ed8'}
+						onMouseLeave={(e) => (e.target as HTMLButtonElement).style.backgroundColor = '#2563eb'}
 					>
 						Get Access
 					</button>

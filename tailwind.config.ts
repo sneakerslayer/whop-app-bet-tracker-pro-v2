@@ -1,7 +1,6 @@
 import { frostedThemePlugin } from "@whop/react/tailwind";
-import type { Config } from "tailwindcss";
 
-const config: Config = {
+export default {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,12 +9,10 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+        background: "#0f172a",
+        foreground: "#ffffff",
       },
     },
   },
   plugins: [frostedThemePlugin()],
 };
-
-export default config;

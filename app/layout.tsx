@@ -24,9 +24,10 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en" suppressHydrationWarning>
+		<html lang="en" suppressHydrationWarning className="dark">
 			<body
-				className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+				className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-900 text-white`}
+				style={{ backgroundColor: '#0f172a', color: '#ffffff' }}
 			>
 				<WhopIframeSdkProvider>
 					{children}
