@@ -87,41 +87,86 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
       // For now, use a placeholder token since SDK doesn't expose user token
       const authToken = "dev-token-123";
 
-      // Fetch bets
-      const betsResponse = await fetch(`/api/bets?experience_id=${experienceId}`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
-        }
-      });
-      if (!betsResponse.ok) throw new Error("Failed to fetch bets");
-      const betsData = await betsResponse.json();
-      setBets(betsData.bets || []);
+      // Fetch bets with timeout
+      const betsResponse = await Promise.race([
+        fetch(`/api/bets?experience_id=${experienceId}`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`,
+            'Content-Type': 'application/json'
+          }
+        }),
+        new Promise((_, reject) => 
+          setTimeout(() => reject(new Error('Request timeout')), 5000)
+        )
+      ]) as Response;
+      
+      if (!betsResponse.ok) {
+        console.warn("Failed to fetch bets, using empty array");
+        setBets([]);
+      } else {
+        const betsData = await betsResponse.json();
+        setBets(betsData.bets || []);
+      }
 
-      // Fetch user stats
-      const statsResponse = await fetch(`/api/user-stats?experience_id=${experienceId}`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
+      // Fetch user stats with timeout
+      try {
+        const statsResponse = await Promise.race([
+          fetch(`/api/user-stats?experience_id=${experienceId}`, {
+            headers: {
+              'Authorization': `Bearer ${authToken}`,
+              'Content-Type': 'application/json'
+            }
+          }),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Request timeout')), 5000)
+          )
+        ]) as Response;
+        
+        if (statsResponse.ok) {
+          const statsData = await statsResponse.json();
+          setStats(statsData.stats);
+        } else {
+          console.warn("Failed to fetch stats, using null");
+          setStats(null);
         }
-      });
-      if (!statsResponse.ok) throw new Error("Failed to fetch stats");
-      const statsData = await statsResponse.json();
-      setStats(statsData.stats);
+      } catch (statsErr) {
+        console.warn("Stats fetch failed:", statsErr);
+        setStats(null);
+      }
 
-      // Fetch leaderboard
-      const leaderboardResponse = await fetch(`/api/leaderboard?experience_id=${experienceId}&limit=20`, {
-        headers: {
-          'Authorization': `Bearer ${authToken}`,
-          'Content-Type': 'application/json'
+      // Fetch leaderboard with timeout
+      try {
+        const leaderboardResponse = await Promise.race([
+          fetch(`/api/leaderboard?experience_id=${experienceId}&limit=20`, {
+            headers: {
+              'Authorization': `Bearer ${authToken}`,
+              'Content-Type': 'application/json'
+            }
+          }),
+          new Promise((_, reject) => 
+            setTimeout(() => reject(new Error('Request timeout')), 5000)
+          )
+        ]) as Response;
+        
+        if (leaderboardResponse.ok) {
+          const leaderboardData = await leaderboardResponse.json();
+          setLeaderboard(leaderboardData.leaderboard || []);
+        } else {
+          console.warn("Failed to fetch leaderboard, using empty array");
+          setLeaderboard([]);
         }
-      });
-      if (!leaderboardResponse.ok) throw new Error("Failed to fetch leaderboard");
-      const leaderboardData = await leaderboardResponse.json();
-      setLeaderboard(leaderboardData.leaderboard || []);
+      } catch (leaderboardErr) {
+        console.warn("Leaderboard fetch failed:", leaderboardErr);
+        setLeaderboard([]);
+      }
 
     } catch (err) {
+      console.error("Dashboard fetch error:", err);
       setError(err instanceof Error ? err.message : "An error occurred");
+      // Set empty defaults so the UI can still render
+      setBets([]);
+      setStats(null);
+      setLeaderboard([]);
     } finally {
       setLoading(false);
     }
@@ -188,12 +233,26 @@ export default function BetTrackerDashboard({ experienceId }: BetTrackerDashboar
         <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-8 text-center max-w-md">
           <h2 className="text-xl font-semibold text-white mb-4">Error Loading Dashboard</h2>
           <p className="text-white/70 mb-4">{error}</p>
-          <button
-            onClick={fetchData}
-            className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
-          >
-            Try Again
-          </button>
+          <div className="space-y-2">
+            <button
+              onClick={fetchData}
+              className="w-full px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+            >
+              Try Again
+            </button>
+            <button
+              onClick={() => {
+                setError(null);
+                setBets([]);
+                setStats(null);
+                setLeaderboard([]);
+                setLoading(false);
+              }}
+              className="w-full px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
+            >
+              Continue Anyway
+            </button>
+          </div>
         </div>
       </div>
     );
